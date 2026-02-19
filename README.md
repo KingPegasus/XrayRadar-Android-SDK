@@ -1,11 +1,13 @@
 # XrayRadar Android SDK
 
-[![CI](https://img.shields.io/github/actions/workflow/status/KingPegasus/xrayradar-android/ci.yml?label=CI&style=flat-square)](https://github.com/KingPegasus/xrayradar-android/actions/workflows/ci.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/KingPegasus/xrayradar-android/ci.yml?label=CI&style=flat-square)](https://github.com/KingPegasus/XrayRadar-Android-SDK/blob/main/.github/workflows/ci.yml)
 ![Android API](https://img.shields.io/badge/minSdk-24-blue?style=flat-square)
-![Kotlin](https://img.shields.io/badge/kotlin-2.1.10-7f52ff?style=flat-square)
-[![License](https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square)](LICENSE)
+![Kotlin](https://img.shields.io/badge/kotlin-2.1.x-7f52ff?style=flat-square)
+[![License](https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square)](https://github.com/KingPegasus/XrayRadar-Android-SDK/blob/main/LICENSE)
 
 Android SDK for sending crash and error telemetry to XrayRadar with offline queue + retry support.
+
+**Supported:** Android minSdk 24+, Kotlin 2.1.x, Java 17.
 
 ## Features
 
@@ -109,9 +111,9 @@ LogBreadcrumbs.i("Checkout", "Started checkout")
 
 ## Development docs
 
-- [Changelog](CHANGELOG.md)
-- [Architecture](ARCHITECTURE.md)
-- [Testing](TESTING.md)
-- [Contributing](CONTRIBUTING.md)
-- [Security](SECURITY.md)
-- [Examples](examples/README.md)
+- [Changelog](https://github.com/KingPegasus/XrayRadar-Android-SDK/blob/main/CHANGELOG.md)
+- [Architecture](https://github.com/KingPegasus/XrayRadar-Android-SDK/blob/main/ARCHITECTURE.md)
+- [Testing](https://github.com/KingPegasus/XrayRadar-Android-SDK/blob/main/TESTING.md)
+- [Contributing](https://github.com/KingPegasus/XrayRadar-Android-SDK/blob/main/CONTRIBUTING.md)
+- [Security](https://github.com/KingPegasus/XrayRadar-Android-SDK/blob/main/SECURITY.md)
+- [Examples](https://github.com/KingPegasus/XrayRadar-Android-SDK/blob/main/examples/README.md)
