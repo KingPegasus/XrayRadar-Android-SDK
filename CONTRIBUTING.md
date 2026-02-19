@@ -18,8 +18,8 @@ cd xrayradar-android
 ## Build and test
 
 ```bash
-gradle :library:testDebugUnitTest
-gradle :library:jacocoTestReport
+./gradlew :library:testDebugUnitTest
+./gradlew :library:jacocoTestReport
 ```
 
 ## Publish (Sonatype/Maven Central)
@@ -34,7 +34,7 @@ Set credentials via environment variables or Gradle properties:
 Then publish:
 
 ```bash
-gradle :library:publishReleasePublicationToSonatypeRepository
+./gradlew :library:publishReleasePublicationToSonatypeRepository
 ```
 
 Use a `-SNAPSHOT` version to publish to Sonatype snapshots.
@@ -48,7 +48,7 @@ CI workflow:
 ## Sample app
 
 ```bash
-gradle :sample:assembleDebug
+./gradlew :sample:assembleDebug
 ```
 
 ## Coding guidelines
