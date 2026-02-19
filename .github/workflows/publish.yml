@@ -33,11 +33,6 @@ jobs:
           packages: tools platform-tools platforms;android-35 build-tools;35.0.0
           accept-android-sdk-licenses: true
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v5
-        with:
-          gradle-version: 8.10.2
-
       - name: Verify publication tasks resolve
         run: ./gradlew :library:tasks --all
 
@@ -64,11 +59,6 @@ jobs:
         with:
           packages: tools platform-tools platforms;android-35 build-tools;35.0.0
           accept-android-sdk-licenses: true
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v5
-        with:
-          gradle-version: 8.10.2
 
       - name: Validate required secrets
         env:
