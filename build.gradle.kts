@@ -4,7 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.android") version "2.1.10" apply false
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.10" apply false
     id("com.google.devtools.ksp") version "2.1.10-1.0.31" apply false
-    id("com.vanniktech.maven.publish") version "0.34.0" apply false
+    id("com.vanniktech.maven.publish") version "0.36.0" apply false
 }
 
 allprojects {
