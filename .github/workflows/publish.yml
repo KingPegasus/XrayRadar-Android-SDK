@@ -27,16 +27,22 @@ jobs:
           distribution: temurin
           java-version: "17"
 
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: tools platform-tools platforms;android-35 build-tools;35.0.0
+          accept-android-sdk-licenses: yes
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
         with:
           gradle-version: 8.10.2
 
       - name: Verify publication tasks resolve
-        run: gradle :library:tasks --all
+        run: ./gradlew :library:tasks --all
 
       - name: Build release artifacts (no publish)
-        run: gradle :library:assembleRelease :library:publishToMavenLocal
+        run: ./gradlew :library:assembleRelease :library:publishToMavenLocal
 
   publish:
     name: Publish to Sonatype
@@ -52,6 +58,12 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: tools platform-tools platforms;android-35 build-tools;35.0.0
+          accept-android-sdk-licenses: yes
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
@@ -76,4 +88,4 @@ jobs:
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
           SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-        run: gradle :library:publishReleasePublicationToSonatypeRepository
+        run: ./gradlew :library:publishReleasePublicationToSonatypeRepository
