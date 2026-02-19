@@ -3,8 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
-    `maven-publish`
-    signing
+    id("com.vanniktech.maven.publish")
     jacoco
 }
 
@@ -31,12 +30,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-        }
     }
 }
 
@@ -99,65 +92,32 @@ dependencies {
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("release") {
-            afterEvaluate {
-                from(components["release"])
-            }
+mavenPublishing {
+    publishToMavenCentral(automaticRelease = true)
+    signAllPublications()
 
-            groupId = project.group.toString()
-            artifactId = "xrayradar-android"
-            version = project.version.toString()
+    coordinates(project.group.toString(), "xrayradar-android", project.version.toString())
 
-            pom {
-                name.set("XrayRadar Android SDK")
-                description.set("Android SDK for sending crash and error telemetry to XrayRadar.")
-                url.set("https://github.com/KingPegasus/xrayradar-android")
-
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://opensource.org/license/mit")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("kingpegasus")
-                        name.set("KingPegasus")
-                    }
-                }
-                scm {
-                    url.set("https://github.com/KingPegasus/xrayradar-android")
-                    connection.set("scm:git:https://github.com/KingPegasus/xrayradar-android.git")
-                    developerConnection.set("scm:git:ssh://git@github.com:KingPegasus/xrayradar-android.git")
-                }
+    pom {
+        name.set("XrayRadar Android SDK")
+        description.set("Android SDK for sending crash and error telemetry to XrayRadar.")
+        url.set("https://github.com/KingPegasus/xrayradar-android")
+        licenses {
+            license {
+                name.set("MIT License")
+                url.set("https://opensource.org/license/mit")
             }
         }
-    }
-
-    repositories {
-        maven {
-            name = "sonatype"
-            val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-            url = if (project.version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
-
-            credentials {
-                username = System.getenv("SONATYPE_USERNAME")
-                    ?: (findProperty("sonatypeUsername") as String?)
-                password = System.getenv("SONATYPE_PASSWORD")
-                    ?: (findProperty("sonatypePassword") as String?)
+        developers {
+            developer {
+                id.set("kingpegasus")
+                name.set("KingPegasus")
             }
         }
-    }
-}
-
-signing {
-    val signingKey = System.getenv("SIGNING_KEY") ?: (findProperty("signingKey") as String?)
-    val signingPassword = System.getenv("SIGNING_PASSWORD") ?: (findProperty("signingPassword") as String?)
-    if (!signingKey.isNullOrBlank() && !signingPassword.isNullOrBlank()) {
-        useInMemoryPgpKeys(signingKey, signingPassword)
-        sign(publishing.publications["release"])
+        scm {
+            url.set("https://github.com/KingPegasus/xrayradar-android")
+            connection.set("scm:git:https://github.com/KingPegasus/xrayradar-android.git")
+            developerConnection.set("scm:git:ssh://git@github.com:KingPegasus/xrayradar-android.git")
+        }
     }
 }

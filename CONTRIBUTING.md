@@ -31,18 +31,18 @@ Set credentials via environment variables or Gradle properties:
 - `SONATYPE_USERNAME` / `SONATYPE_PASSWORD`
 - `SIGNING_KEY` / `SIGNING_PASSWORD` (ASCII-armored private key + passphrase)
 
-Then publish:
+Then publish (Central Portal):
 
 ```bash
-./gradlew :library:publishReleasePublicationToSonatypeRepository
+./gradlew :library:publishToMavenCentral
 ```
 
-Use a `-SNAPSHOT` version to publish to Sonatype snapshots.
+Set `ORG_GRADLE_PROJECT_mavenCentralUsername`, `ORG_GRADLE_PROJECT_mavenCentralPassword`, `ORG_GRADLE_PROJECT_signingInMemoryKey`, and `ORG_GRADLE_PROJECT_signingInMemoryKeyPassword` (or use `gradle.properties`). Use a `-SNAPSHOT` version to publish to Central snapshots.
 
 CI workflow:
 
 - `.github/workflows/publish.yml`
-  - tag `v*` -> publishes to Sonatype
+  - tag `v*` -> publishes to Maven Central (Central Portal)
   - manual dispatch supports dry-run mode
 
 ## Sample app

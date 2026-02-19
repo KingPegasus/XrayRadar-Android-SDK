@@ -12,7 +12,7 @@
 
 Please report security issues privately and do not open a public issue.
 
-- Email: security@xrayradar.com
+- Email: dev@xrayradar.com
 - Include:
   - A clear description
   - Reproduction steps
