@@ -19,7 +19,7 @@ internal class HttpTransport(
     dsn: String,
     private val authToken: String,
     private val timeoutMs: Long = 10_000,
-    private val userAgent: String = "xrayradar-android/0.1.0",
+    private val userAgent: String = "xrayradar-android/0.2.0",
 ) {
     private val dsnParts = parseDsn(dsn)
     private val client = OkHttpClient.Builder()

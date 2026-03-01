@@ -13,7 +13,15 @@ internal object TransportDebugLog {
 
     fun log(message: String) {
         val full = "[API] $message"
-        Log.i(TAG, message)
-        logger?.invoke(full)
+        try {
+            Log.i(TAG, message)
+        } catch (_: Throwable) {
+            // Log may throw on JVM unit tests (no Android runtime)
+        }
+        try {
+            logger?.invoke(full)
+        } catch (_: Throwable) {
+            // Avoid breaking transport if callback throws
+        }
     }
 }
