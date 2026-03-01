@@ -10,6 +10,7 @@ import com.xrayradar.android.internal.db.XrayRadarDatabase
 import com.xrayradar.android.internal.model.EventPayload
 import com.xrayradar.android.internal.transport.HttpTransport
 import com.xrayradar.android.internal.transport.SendResult
+import com.xrayradar.android.internal.transport.TransportDebugLog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -20,8 +21,15 @@ internal class SendEventsWorker(
 ) : CoroutineWorker(appContext, params) {
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
-        val dsn = inputData.getString(KEY_DSN) ?: return@withContext Result.failure()
-        val token = inputData.getString(KEY_TOKEN) ?: return@withContext Result.failure()
+        val dsn = inputData.getString(KEY_DSN) ?: run {
+            TransportDebugLog.log("SendEventsWorker: missing DSN")
+            return@withContext Result.failure()
+        }
+        val token = inputData.getString(KEY_TOKEN) ?: run {
+            TransportDebugLog.log("SendEventsWorker: missing token")
+            return@withContext Result.failure()
+        }
+        TransportDebugLog.log("SendEventsWorker: started")
         val db = Room.databaseBuilder(
             applicationContext,
             XrayRadarDatabase::class.java,
@@ -33,19 +41,21 @@ internal class SendEventsWorker(
 
         try {
             val due = dao.getDue(System.currentTimeMillis(), 20)
+            TransportDebugLog.log("SendEventsWorker: ${due.size} events due")
             val successIds = mutableListOf<Long>()
 
             for (row in due) {
                 val event = try {
                     json.decodeFromString<EventPayload>(row.payload)
-                } catch (_: Exception) {
+                } catch (e: Exception) {
+                    TransportDebugLog.log("SendEventsWorker: skip invalid payload id=${row.id} ${e.message}")
                     successIds.add(row.id)
                     continue
                 }
                 when (val result = transport.send(event)) {
                     is SendResult.Success -> successIds.add(row.id)
                     is SendResult.Failure -> {
-                        // non-retryable by default, drop bad payloads/auth errors
+                        TransportDebugLog.log("SendEventsWorker: event ${event.eventId} failed (non-retryable), dropping")
                         successIds.add(row.id)
                     }
                     is SendResult.Retryable -> {
@@ -56,10 +66,15 @@ internal class SendEventsWorker(
                             attempts = attempts,
                             nextAttemptAt = System.currentTimeMillis() + waitMs,
                         )
+                        TransportDebugLog.log("SendEventsWorker: event ${event.eventId} retryable, attempts=$attempts nextIn=${waitMs}ms")
                     }
                 }
             }
-            if (successIds.isNotEmpty()) dao.deleteIds(successIds)
+            if (successIds.isNotEmpty()) {
+                dao.deleteIds(successIds)
+                TransportDebugLog.log("SendEventsWorker: deleted ${successIds.size} sent events")
+            }
+            TransportDebugLog.log("SendEventsWorker: finished")
             Result.success()
         } finally {
             db.close()

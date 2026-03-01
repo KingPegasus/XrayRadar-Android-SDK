@@ -11,6 +11,7 @@ import com.xrayradar.android.internal.model.EventPayload
 import com.xrayradar.android.internal.normalizeLevel
 import com.xrayradar.android.internal.nowIsoUtc
 import com.xrayradar.android.internal.queue.QueueManager
+import com.xrayradar.android.internal.transport.TransportDebugLog
 import com.xrayradar.android.internal.truncatePayload
 import com.xrayradar.android.internal.toJsonElement
 import kotlinx.serialization.json.JsonObject
@@ -114,6 +115,14 @@ object XrayRadar {
 
     fun flush() {
         queueManager?.triggerFlush()
+    }
+
+    /**
+     * Set an optional logger for API (transport) interactions with the XrayRadar server.
+     * Useful for debugging: e.g. `setTransportDebugLogger { msg -> Log.d("App", msg) }`
+     */
+    fun setTransportDebugLogger(logger: ((String) -> Unit)?) {
+        TransportDebugLog.logger = logger
     }
 
     @Synchronized

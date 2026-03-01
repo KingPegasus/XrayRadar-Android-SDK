@@ -28,10 +28,12 @@ internal class HttpTransport(
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
 
     fun send(event: EventPayload): SendResult {
+        val url = "${dsnParts.serverUrl}/api/${dsnParts.projectId}/store/"
         return try {
             val payload = json.encodeToString(event)
+            TransportDebugLog.log("API POST $url (payload ${payload.length} bytes, event_id=${event.eventId})")
             val request = Request.Builder()
-                .url("${dsnParts.serverUrl}/api/${dsnParts.projectId}/store/")
+                .url(url)
                 .post(payload.toRequestBody("application/json".toMediaType()))
                 .addHeader("Content-Type", "application/json")
                 .addHeader("User-Agent", userAgent)
@@ -39,17 +41,29 @@ internal class HttpTransport(
                 .build()
 
             client.newCall(request).execute().use { response ->
+                val bodyStr = response.body?.string()
                 when {
-                    response.isSuccessful -> SendResult.Success
+                    response.isSuccessful -> {
+                        TransportDebugLog.log("API response ${response.code} OK (event_id=${event.eventId})")
+                        SendResult.Success
+                    }
                     response.code == 429 -> {
                         val retryAfter = response.header("Retry-After")?.toLongOrNull()
+                        TransportDebugLog.log("API response 429 rate limited, retryAfter=$retryAfter")
                         SendResult.Retryable(retryAfter)
                     }
-                    response.code in 500..599 -> SendResult.Retryable(null)
-                    else -> SendResult.Failure(response.code, response.body?.string())
+                    response.code in 500..599 -> {
+                        TransportDebugLog.log("API response ${response.code} server error, will retry")
+                        SendResult.Retryable(null)
+                    }
+                    else -> {
+                        TransportDebugLog.log("API response ${response.code} failure body=${bodyStr?.take(200)}")
+                        SendResult.Failure(response.code, bodyStr)
+                    }
                 }
             }
         } catch (e: Exception) {
+            TransportDebugLog.log("API request failed: ${e.javaClass.simpleName} ${e.message}")
             SendResult.Retryable(null)
         }
     }
