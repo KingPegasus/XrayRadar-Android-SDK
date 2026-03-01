@@ -1,7 +1,7 @@
 # XrayRadar Android SDK
 
 [![CI](https://img.shields.io/github/actions/workflow/status/KingPegasus/XrayRadar-Android-SDK/ci.yml?label=CI&style=flat-square)](https://github.com/KingPegasus/XrayRadar-Android-SDK/blob/main/.github/workflows/ci.yml)
-![Coverage](https://img.shields.io/badge/coverage-0%25-red?style=flat-square)
+![Coverage](https://img.shields.io/badge/coverage-39%25-red?style=flat-square)
 ![Android API](https://img.shields.io/badge/minSdk-24-blue?style=flat-square)
 ![Kotlin](https://img.shields.io/badge/kotlin-2.1.x-7f52ff?style=flat-square)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square)](https://github.com/KingPegasus/XrayRadar-Android-SDK/blob/main/LICENSE)
