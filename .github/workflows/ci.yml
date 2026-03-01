@@ -83,7 +83,13 @@ jobs:
 
       - name: Update README with coverage badge
         run: |
-          COV=$(cat coverage-pct/coverage-pct.txt)
+          if [ -f coverage-pct/coverage-pct.txt ]; then
+            COV=$(cat coverage-pct/coverage-pct.txt)
+          elif [ -f coverage-pct.txt ]; then
+            COV=$(cat coverage-pct.txt)
+          else
+            COV=0
+          fi
           COV=${COV:-0}
           if (( $(echo "$COV >= 90" | bc -l) )); then
             COLOR="brightgreen"
