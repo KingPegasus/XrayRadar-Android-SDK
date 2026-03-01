@@ -22,6 +22,33 @@ cd xrayradar-android
 ./gradlew :library:jacocoTestReport
 ```
 
+Run both in one go:
+
+```bash
+./gradlew :library:testDebugUnitTest :library:jacocoTestReport
+```
+
+### Test report vs coverage report
+
+| Report | Path | What it shows |
+|--------|------|----------------|
+| **Test results** | `library/build/reports/tests/testDebugUnitTest/index.html` | Which tests passed/failed and duration. No coverage. |
+| **Coverage (JaCoCo)** | `library/build/reports/jacoco/jacocoTestReport/html/index.html` | Line/branch coverage by package and class. |
+
+View the **test report** in a browser:
+
+```bash
+xdg-open library/build/reports/tests/testDebugUnitTest/index.html
+# or: python3 -m http.server 8080 --directory library/build/reports/tests/testDebugUnitTest
+```
+
+View the **coverage report** in a browser:
+
+```bash
+xdg-open library/build/reports/jacoco/jacocoTestReport/html/index.html
+# or: python3 -m http.server 8080 --directory library/build/reports/jacoco/jacocoTestReport/html
+```
+
 ## Publish (Sonatype/Maven Central)
 
 Publishing uses `maven-publish` + `signing` from `library/build.gradle.kts`.

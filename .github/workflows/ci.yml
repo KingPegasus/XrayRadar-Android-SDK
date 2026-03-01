@@ -27,6 +27,33 @@ jobs:
       - name: Build library tests
         run: ./gradlew :library:testDebugUnitTest :library:jacocoTestReport
 
+      - name: Extract coverage percentage
+        run: |
+          XML="library/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml"
+          if [ -f "$XML" ]; then
+            COV=$(python3 -c "
+          import xml.etree.ElementTree as ET
+          root = ET.parse('$XML').getroot()
+          covered = missed = 0
+          for c in root.iter('counter'):
+              if c.get('type') == 'LINE':
+                  covered += int(c.get('covered', 0))
+                  missed += int(c.get('missed', 0))
+          total = covered + missed
+          pct = round(100 * covered / total) if total else 0
+          print(pct)
+          ")
+          else
+            COV=0
+          fi
+          echo "$COV" > coverage-pct.txt
+
+      - name: Upload coverage percentage
+        uses: actions/upload-artifact@v6
+        with:
+          name: coverage-pct
+          path: coverage-pct.txt
+
       - name: Upload coverage report
         uses: actions/upload-artifact@v6
         with:
@@ -34,3 +61,69 @@ jobs:
           path: |
             library/build/reports/jacoco/jacocoTestReport/
             library/build/reports/tests/
+
+  update-badges:
+    name: Update coverage badge
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    needs: [test]
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.head_ref }}
+
+      - name: Download coverage percentage
+        uses: actions/download-artifact@v6
+        with:
+          name: coverage-pct
+
+      - name: Update README with coverage badge
+        run: |
+          if [ -f coverage-pct/coverage-pct.txt ]; then
+            COV=$(cat coverage-pct/coverage-pct.txt)
+          elif [ -f coverage-pct.txt ]; then
+            COV=$(cat coverage-pct.txt)
+          else
+            COV=0
+          fi
+          COV=${COV:-0}
+          if (( $(echo "$COV >= 90" | bc -l) )); then
+            COLOR="brightgreen"
+          elif (( $(echo "$COV >= 75" | bc -l) )); then
+            COLOR="green"
+          elif (( $(echo "$COV >= 50" | bc -l) )); then
+            COLOR="yellow"
+          else
+            COLOR="red"
+          fi
+          COV="$COV" COLOR="$COLOR" python3 << 'PYEOF'
+          import os, re
+          cov = int(round(float(os.environ.get('COV', 0))))
+          color = os.environ.get('COLOR', 'red')
+          pct = '%25'
+          with open('README.md', 'r') as f:
+              content = f.read()
+          content = re.sub(
+              r'!\[Coverage\]\(https://img\.shields\.io/badge/coverage-[0-9.]+%25-[a-z]+\?style=flat-square\)',
+              f'![Coverage](https://img.shields.io/badge/coverage-{cov}{pct}-{color}?style=flat-square)',
+              content
+          )
+          with open('README.md', 'w') as f:
+              f.write(content)
+          PYEOF
+
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          if git diff --exit-code README.md; then
+            echo "No changes to README.md"
+            exit 0
+          fi
+          git add README.md
+          git commit -m "chore: update test coverage badge [skip ci]"
+          git push origin HEAD:${{ github.head_ref }}

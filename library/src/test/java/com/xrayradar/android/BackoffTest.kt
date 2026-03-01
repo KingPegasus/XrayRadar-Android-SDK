@@ -20,4 +20,25 @@ class BackoffTest {
         assertTrue(later > first)
         assertEquals(15 * 60 * 1_000L, capped)
     }
+
+    @Test
+    fun `attempt 0 gives 5s`() {
+        assertEquals(5_000L, nextBackoffMs(attempts = 0, retryAfterSeconds = null))
+    }
+
+    @Test
+    fun `attempt 1 gives 10s`() {
+        assertEquals(10_000L, nextBackoffMs(attempts = 1, retryAfterSeconds = null))
+    }
+
+    @Test
+    fun `retry-after zero uses exponential`() {
+        assertEquals(5_000L, nextBackoffMs(attempts = 0, retryAfterSeconds = 0))
+    }
+
+    @Test
+    fun `attempts above 10 still capped at 15 min`() {
+        assertEquals(15 * 60 * 1_000L, nextBackoffMs(attempts = 10, retryAfterSeconds = null))
+        assertEquals(15 * 60 * 1_000L, nextBackoffMs(attempts = 15, retryAfterSeconds = null))
+    }
 }

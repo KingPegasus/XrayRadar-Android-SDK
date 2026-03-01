@@ -39,4 +39,19 @@ class CrashHandlerTest {
             Thread.setDefaultUncaughtExceptionHandler(previous)
         }
     }
+
+    @Test
+    fun `when capture throws previous handler still invoked`() {
+        val previous = Thread.getDefaultUncaughtExceptionHandler()
+        var delegated = false
+        val sentinel = Thread.UncaughtExceptionHandler { _, _ -> delegated = true }
+        Thread.setDefaultUncaughtExceptionHandler(sentinel)
+        try {
+            val handler = CrashHandler { _ -> throw RuntimeException("capture failed") }
+            handler.uncaughtException(Thread.currentThread(), IllegalStateException("boom"))
+            assertTrue(delegated)
+        } finally {
+            Thread.setDefaultUncaughtExceptionHandler(previous)
+        }
+    }
 }

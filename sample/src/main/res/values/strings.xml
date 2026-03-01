@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">XrayRadar Sample</string>
+    <string name="title_test_sdk">Test XrayRadar SDK</string>
+    <string name="btn_crash">Crash (uncaught exception)</string>
+    <string name="btn_capture_exception">Capture exception</string>
+    <string name="btn_capture_message">Capture message</string>
+    <string name="btn_add_breadcrumb">Add breadcrumb</string>
+    <string name="btn_flush">Flush queue</string>
+    <string name="btn_network">Make HTTP request (breadcrumb)</string>
+    <string name="log_section_title">App log</string>
+    <string name="log_clear">Clear log</string>
+</resources>

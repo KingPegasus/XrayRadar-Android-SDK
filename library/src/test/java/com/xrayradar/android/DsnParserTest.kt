@@ -16,4 +16,28 @@ class DsnParserTest {
     fun `reject invalid dsn`() {
         parseDsn("not-a-url")
     }
+
+    @Test
+    fun `parse dsn with port`() {
+        val out = parseDsn("https://ingest.example.com:8080/99")
+        assertEquals("https://ingest.example.com:8080", out.serverUrl)
+        assertEquals("99", out.projectId)
+    }
+
+    @Test
+    fun `parse dsn with trailing slash`() {
+        val out = parseDsn("https://xrayradar.com/my_project/")
+        assertEquals("https://xrayradar.com", out.serverUrl)
+        assertEquals("my_project", out.projectId)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `reject dsn with missing project id`() {
+        parseDsn("https://xrayradar.com/")
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `reject dsn with blank host`() {
+        parseDsn("https:///project")
+    }
 }

@@ -29,4 +29,32 @@ class PayloadSerializationTest {
         assertTrue(encoded.contains("\"platform\":\"android\""))
         assertTrue(encoded.contains("\"environment\":\"test\""))
     }
+
+    @Test
+    fun `serializes payload with exception and fingerprint`() {
+        val payload = EventPayload(
+            eventId = "e1",
+            timestamp = "2026-01-01T00:00:00Z",
+            level = "error",
+            message = "fail",
+            platform = "android",
+            sdk = SdkInfo("xrayradar.android", "0.1.0"),
+            contexts = buildJsonObject { put("env", "test") },
+            breadcrumbs = emptyList(),
+            exception = com.xrayradar.android.internal.model.ExceptionPayload(
+                listOf(
+                    com.xrayradar.android.internal.model.ExceptionValuePayload(
+                        "RuntimeException",
+                        "msg",
+                        com.xrayradar.android.internal.model.StacktracePayload(emptyList()),
+                    ),
+                ),
+            ),
+            fingerprint = listOf("key1", "key2"),
+        )
+        val encoded = json.encodeToString(payload)
+        assertTrue(encoded.contains("\"exception\""))
+        assertTrue(encoded.contains("\"fingerprint\""))
+        assertTrue(encoded.contains("key1"))
+    }
 }

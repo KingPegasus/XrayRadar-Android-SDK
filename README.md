@@ -1,6 +1,7 @@
 # XrayRadar Android SDK
 
 [![CI](https://img.shields.io/github/actions/workflow/status/KingPegasus/XrayRadar-Android-SDK/ci.yml?label=CI&style=flat-square)](https://github.com/KingPegasus/XrayRadar-Android-SDK/blob/main/.github/workflows/ci.yml)
+![Coverage](https://img.shields.io/badge/coverage-39%25-red?style=flat-square)
 ![Android API](https://img.shields.io/badge/minSdk-24-blue?style=flat-square)
 ![Kotlin](https://img.shields.io/badge/kotlin-2.1.x-7f52ff?style=flat-square)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square)](https://github.com/KingPegasus/XrayRadar-Android-SDK/blob/main/LICENSE)
@@ -24,7 +25,7 @@ Android SDK for sending crash and error telemetry to XrayRadar with offline queu
 
 ```kotlin
 dependencies {
-  implementation("com.xrayradar:xrayradar-android:0.1.0")
+  implementation("com.xrayradar:xrayradar-android:0.2.0")
 }
 ```
 
@@ -34,7 +35,7 @@ dependencies {
 XrayRadar.init(
     context = applicationContext,
     options = XrayRadarOptions(
-        dsn = "https://xrayradar.com/1",
+        dsn = "https://xrayradar.com/<project_id>",
         authToken = "your-token",
         environment = "production",
         release = BuildConfig.VERSION_NAME,

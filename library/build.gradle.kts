@@ -1,9 +1,13 @@
+import org.gradle.plugins.signing.Sign
+import org.gradle.plugins.signing.SigningExtension
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
     id("com.vanniktech.maven.publish")
+    id("signing")
     jacoco
 }
 
@@ -118,6 +122,21 @@ mavenPublishing {
             url.set("https://github.com/KingPegasus/xrayradar-android")
             connection.set("scm:git:https://github.com/KingPegasus/xrayradar-android.git")
             developerConnection.set("scm:git:ssh://git@github.com:KingPegasus/xrayradar-android.git")
+        }
+    }
+}
+
+// Sign only when keys are present (CI); skip signing for publishToMavenLocal / local builds
+afterEvaluate {
+    val signingKey = project.findProperty("ORG_GRADLE_PROJECT_signingInMemoryKey") as String? ?: System.getenv("ORG_GRADLE_PROJECT_signingInMemoryKey")
+    val signingPassword = project.findProperty("ORG_GRADLE_PROJECT_signingInMemoryKeyPassword") as String? ?: System.getenv("ORG_GRADLE_PROJECT_signingInMemoryKeyPassword")
+    if (!signingKey.isNullOrBlank() && !signingPassword.isNullOrBlank()) {
+        extensions.configure<SigningExtension> {
+            useInMemoryPgpKeys(signingKey, signingPassword)
+        }
+    } else {
+        tasks.withType<Sign>().configureEach {
+            enabled = false
         }
     }
 }

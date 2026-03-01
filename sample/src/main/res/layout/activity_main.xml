@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_test_sdk"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="24dp" />
+
+        <Button
+            android:id="@+id/btn_crash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_crash"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btn_capture_exception"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_capture_exception"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btn_capture_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_capture_message"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btn_add_breadcrumb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_add_breadcrumb"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btn_flush"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_flush"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btn_network"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_network"
+            android:layout_marginBottom="24dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ccc"
+            android:layout_marginBottom="12dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/log_section_title"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            <Button
+                android:id="@+id/btn_clear_log"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/log_clear"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/log_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:background="#f5f5f5"
+            android:padding="12dp"
+            android:scrollbars="vertical">
+            <TextView
+                android:id="@+id/log_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:fontFamily="monospace"
+                android:text=""
+                android:gravity="top|start" />
+        </ScrollView>
+    </LinearLayout>
+</ScrollView>
