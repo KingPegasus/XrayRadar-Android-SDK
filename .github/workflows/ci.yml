@@ -49,13 +49,13 @@ jobs:
           echo "$COV" > coverage-pct.txt
 
       - name: Upload coverage percentage
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-pct
           path: coverage-pct.txt
 
       - name: Upload coverage report
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: library-coverage
           path: |
