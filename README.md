@@ -118,3 +118,7 @@ LogBreadcrumbs.i("Checkout", "Started checkout")
 - [Contributing](https://github.com/KingPegasus/XrayRadar-Android-SDK/blob/main/CONTRIBUTING.md)
 - [Security](https://github.com/KingPegasus/XrayRadar-Android-SDK/blob/main/SECURITY.md)
 - [Examples](https://github.com/KingPegasus/XrayRadar-Android-SDK/blob/main/examples/README.md)
+
+## About
+
+XrayRadar is built and maintained by [Rhyme Solutions](https://rhymesolutions.com). Read the [XrayRadar case study](https://rhymesolutions.com/work/xrayradar).

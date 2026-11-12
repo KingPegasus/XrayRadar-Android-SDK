@@ -105,7 +105,11 @@ mavenPublishing {
     pom {
         name.set("XrayRadar Android SDK")
         description.set("Android SDK for sending crash and error telemetry to XrayRadar.")
-        url.set("https://github.com/KingPegasus/xrayradar-android")
+        url.set("https://rhymesolutions.com/work/xrayradar")
+        organization {
+            name.set("Rhyme Solutions")
+            url.set("https://rhymesolutions.com")
+        }
         licenses {
             license {
                 name.set("MIT License")
@@ -116,6 +120,8 @@ mavenPublishing {
             developer {
                 id.set("kingpegasus")
                 name.set("KingPegasus")
+                organization.set("Rhyme Solutions")
+                organizationUrl.set("https://rhymesolutions.com")
             }
         }
         scm {
