@@ -27,11 +27,11 @@ The SDK is often installed under `/usr/lib/android-sdk`. Set the project to use 
 echo 'sdk.dir=/usr/lib/android-sdk' > local.properties
 ```
 
-Then install the components needed to build and run tests. This project uses **compileSdk 35**, so install matching platform and build-tools. The system SDK at `/usr/lib/android-sdk` is not writable by normal users, so use `sudo`:
+Then install the components needed to build and run tests. This project uses **compileSdk 37**, so install matching platform and build-tools. The system SDK at `/usr/lib/android-sdk` is not writable by normal users, so use `sudo`:
 
 ```bash
 export ANDROID_HOME=/usr/lib/android-sdk
-sudo $ANDROID_HOME/cmdline-tools/13.0/bin/sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+sudo $ANDROID_HOME/cmdline-tools/13.0/bin/sdkmanager "platform-tools" "platforms;android-37.0" "build-tools;37.0.0"
 ```
 
 You will be prompted to accept the Android SDK license; type `y` and Enter. If you use a user-writable SDK path (e.g. `$HOME/Android/Sdk` from Android Studio), you can run `sdkmanager` without `sudo` and Gradle will be able to install missing components automatically.

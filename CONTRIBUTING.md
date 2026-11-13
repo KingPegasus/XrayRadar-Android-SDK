@@ -5,7 +5,7 @@ Thanks for contributing to XrayRadar Android SDK.
 ## Prerequisites
 
 - JDK 17
-- Android SDK (compileSdk 35)
+- Android SDK (compileSdk 37)
 - Gradle 8.10+
 
 ## Setup
