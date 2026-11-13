@@ -3,7 +3,6 @@ import org.gradle.plugins.signing.SigningExtension
 
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
     id("com.vanniktech.maven.publish")
@@ -13,7 +12,7 @@ plugins {
 
 android {
     namespace = "com.xrayradar.android"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 24
@@ -44,7 +43,7 @@ kotlin {
 }
 
 jacoco {
-    toolVersion = "0.8.12"
+    toolVersion = "0.8.16"
 }
 
 tasks.register<JacocoReport>("jacocoTestReport") {
@@ -62,7 +61,8 @@ tasks.register<JacocoReport>("jacocoTestReport") {
         "**/BuildConfig.*",
         "**/Manifest*.*",
     )
-    val kotlinClasses = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+    // AGP 9 built-in Kotlin compiles to intermediates/built_in_kotlinc (was tmp/kotlin-classes)
+    val kotlinClasses = fileTree("${layout.buildDirectory.get()}/intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes") {
         exclude(fileFilter)
     }
     val javaClasses = fileTree("${layout.buildDirectory.get()}/intermediates/javac/debug") {
@@ -75,25 +75,23 @@ tasks.register<JacocoReport>("jacocoTestReport") {
             "${project.projectDir}/src/main/java",
         ),
     )
-    executionData.setFrom(fileTree(layout.buildDirectory.get()) {
-        include("**/*.exec", "**/*.ec")
-    })
+    executionData.setFrom(layout.buildDirectory.file("jacoco/testDebugUnitTest.exec"))
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.13.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
 
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:okhttp:5.5.1")
 
-    implementation("androidx.work:work-runtime-ktx:2.11.1")
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.work:work-runtime-ktx:2.12.0")
+    implementation("androidx.room:room-runtime:2.8.5")
+    implementation("androidx.room:room-ktx:2.8.5")
+    ksp("androidx.room:room-compiler:2.8.5")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:5.5.1")
 }
 
 mavenPublishing {
@@ -105,7 +103,11 @@ mavenPublishing {
     pom {
         name.set("XrayRadar Android SDK")
         description.set("Android SDK for sending crash and error telemetry to XrayRadar.")
-        url.set("https://github.com/KingPegasus/xrayradar-android")
+        url.set("https://rhymesolutions.com/work/xrayradar")
+        organization {
+            name.set("Rhyme Solutions")
+            url.set("https://rhymesolutions.com")
+        }
         licenses {
             license {
                 name.set("MIT License")
@@ -116,12 +118,14 @@ mavenPublishing {
             developer {
                 id.set("kingpegasus")
                 name.set("KingPegasus")
+                organization.set("Rhyme Solutions")
+                organizationUrl.set("https://rhymesolutions.com")
             }
         }
         scm {
-            url.set("https://github.com/KingPegasus/xrayradar-android")
-            connection.set("scm:git:https://github.com/KingPegasus/xrayradar-android.git")
-            developerConnection.set("scm:git:ssh://git@github.com:KingPegasus/xrayradar-android.git")
+            url.set("https://github.com/KingPegasus/XrayRadar-Android-SDK")
+            connection.set("scm:git:https://github.com/KingPegasus/XrayRadar-Android-SDK.git")
+            developerConnection.set("scm:git:ssh://git@github.com/KingPegasus/XrayRadar-Android-SDK.git")
         }
     }
 }
