@@ -125,9 +125,9 @@ mavenPublishing {
             }
         }
         scm {
-            url.set("https://github.com/KingPegasus/xrayradar-android")
-            connection.set("scm:git:https://github.com/KingPegasus/xrayradar-android.git")
-            developerConnection.set("scm:git:ssh://git@github.com:KingPegasus/xrayradar-android.git")
+            url.set("https://github.com/KingPegasus/XrayRadar-Android-SDK")
+            connection.set("scm:git:https://github.com/KingPegasus/XrayRadar-Android-SDK.git")
+            developerConnection.set("scm:git:ssh://git@github.com/KingPegasus/XrayRadar-Android-SDK.git")
         }
     }
 }
