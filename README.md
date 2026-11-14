@@ -25,7 +25,7 @@ Android SDK for sending crash and error telemetry to XrayRadar with offline queu
 
 ```kotlin
 dependencies {
-  implementation("com.xrayradar:xrayradar-android:0.2.0")
+  implementation("com.xrayradar:xrayradar-android:0.3.0")
 }
 ```
 
