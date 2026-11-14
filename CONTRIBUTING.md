@@ -5,14 +5,14 @@ Thanks for contributing to XrayRadar Android SDK.
 ## Prerequisites
 
 - JDK 17
-- Android SDK (compileSdk 35)
+- Android SDK (compileSdk 37)
 - Gradle 8.10+
 
 ## Setup
 
 ```bash
-git clone <repo-url>
-cd xrayradar-android
+git clone https://github.com/KingPegasus/XrayRadar-Android-SDK.git
+cd XrayRadar-Android-SDK
 ```
 
 ## Build and test

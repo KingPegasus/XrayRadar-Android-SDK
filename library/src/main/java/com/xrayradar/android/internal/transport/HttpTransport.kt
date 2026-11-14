@@ -41,7 +41,7 @@ internal class HttpTransport(
                 .build()
 
             client.newCall(request).execute().use { response ->
-                val bodyStr = response.body?.string()
+                val bodyStr = response.body.string()
                 when {
                     response.isSuccessful -> {
                         TransportDebugLog.log("API response ${response.code} OK (event_id=${event.eventId})")
@@ -57,7 +57,7 @@ internal class HttpTransport(
                         SendResult.Retryable(null)
                     }
                     else -> {
-                        TransportDebugLog.log("API response ${response.code} failure body=${bodyStr?.take(200)}")
+                        TransportDebugLog.log("API response ${response.code} failure body=${bodyStr.take(200)}")
                         SendResult.Failure(response.code, bodyStr)
                     }
                 }

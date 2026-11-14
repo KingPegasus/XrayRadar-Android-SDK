@@ -21,7 +21,7 @@ class NetworkBreadcrumbInterceptorTest {
             val request = Request.Builder().url(server.url("/")).build()
             val response = client.newCall(request).execute()
             assertEquals(200, response.code)
-            assertEquals("ok", response.body?.string())
+            assertEquals("ok", response.body.string())
         } finally {
             server.shutdown()
         }
